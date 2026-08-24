@@ -1,0 +1,25 @@
+// prisma/schema.prisma
+//
+// This file is the single source of truth for TaskFlow's database schema.
+// Prisma reads this file to generate a fully-typed database client — so
+// changing a field here (e.g. renaming "title") will cause TypeScript to
+// flag every place in the app that still references the old name.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // pulled from .env — never hardcode connection strings
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// A single task in the tracker.
+model Task {
+  id         Int      @id @default(autoincrement())
+  title      String
+  isComplete Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@map("tasks") // maps this model to a snake_case table name in Postgres
+}
